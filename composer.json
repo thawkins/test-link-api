@@ -1,0 +1,23 @@
+{
+    "name": "Skalda/TestLinkAPI",
+    "type": "library",
+    "description": "PHP client library for XML-RPC API of TestLink",
+    "keywords": ["testlink","xmlrpc","api","clinet"],
+    "homepage": "https://github.com/Skalda/TestLinkAPI",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tomáš Skalický",
+            "email": "skalicky.tomas@hotmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.1",
+        "kissifrot/php-ixr": "^1.8"
+    },
+    "autoload": {
+        "psr-0": {
+            "Skalda\\TestLinkAPI\\": "src/"
+        }
+    }
+}
