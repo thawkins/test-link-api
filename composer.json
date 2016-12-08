@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Skalda\\TestLinkAPI": "src/"
+            "Skalda\\TestLinkAPI\\": "src/"
         }
     },
     "extra": {
