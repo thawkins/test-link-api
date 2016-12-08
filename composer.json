@@ -1,5 +1,5 @@
 {
-    "name": "Skalda/TestLinkAPI",
+    "name": "skalda/test-link-api",
     "type": "library",
     "description": "PHP client library for XML-RPC API of TestLink",
     "keywords": ["testlink","xmlrpc","api","clinet"],
