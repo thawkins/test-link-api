@@ -32,6 +32,7 @@ class Client
 	 */
 	public function __construct($serverUrl)
 	{
+		$this->client;
 		$this->serverURL = $serverUrl;
 	}
 
@@ -57,7 +58,7 @@ class Client
 	 */
 	public function checkApiKey($apiKey)
 	{
-		return $this->_makeCall('tl.checkDevKey', ['devKey' => $apiKey]); /** @todo */
+		return $this->_makeCall('tl.checkDevKey', ['devKey' => $apiKey]);
 	}
 
 	/**
@@ -490,6 +491,7 @@ class Client
 			'summary' => $summary,
 			'steps' => $steps,
 			'preconditions' => $preconditions,
+			'authorlogin' => $user->login,
 		];
 
 		foreach($steps as $step) {
@@ -1015,7 +1017,7 @@ class Client
 
 	/**
 	 * @param string $login
-	 * @return User
+	 * @return User|bool
 	 */
 	public function getUserByLogin($login)
 	{
@@ -1025,7 +1027,11 @@ class Client
 
 		$response = $this->_makeSignCall('tl.getUserByLogin', $args);
 
-		return User::createFromArray($this, $response);
+		if(isset($response[0])) {
+			return User::createFromArray($this, $response[0]);
+		}
+
+		return false;
 	}
 
 	/**
@@ -1315,10 +1321,9 @@ class Client
 	{
 		$this->getClient()->query($method, $args);
 		if($this->getClient()->isError()) {
-			dump($this->getClient()->getError());
-			exit;
+			throw new TestLinkAPIException($this->getClient()->getErrorMessage(), $this->getClient()->getErrorCode());
 		}
-		return $this->getClient()->getResponse();
+		return $this->checkResponse($this->getClient()->getResponse());
 	}
 
 	/**
@@ -1330,6 +1335,24 @@ class Client
 	{
 		$args['devKey'] = $this->apiKey;
 		return $this->_makeCall($method, $args);
+	}
+
+	protected function checkResponse($response)
+	{
+		if(is_array($response)) {
+			if(isset($response['code']) && $response['code'] != null) {
+				throw new TestLinkAPIException($response['message'], $response['code']);
+			} elseif (isset($response['status_ok']) && $response['status_ok'] != null && $response['status_ok'] == 0){
+				throw new TestLinkAPIException($response['msg'], $response['status_ok']);
+			}
+		}
+
+		return $response;
+	}
+
+	public function setClient($client)
+	{
+		$this->client = $client;
 	}
 
 	/**

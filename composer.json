@@ -24,5 +24,8 @@
         "branch-alias": {
             "dev-master": "0.1-dev"
         }
+    },
+    "require-dev": {
+        "Nette/Tester": "^1.7"
     }
 }
