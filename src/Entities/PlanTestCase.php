@@ -48,7 +48,7 @@ class PlanTestCase extends BaseEntity
 				$instance->setBuild($build);
 			}
 
-			if(is_array($platforms) && count($platforms) > 0) {
+			if(is_array($platforms) && count($platforms) > 0 && isset($platforms[$instance->platformId])) {
 				$instance->setPlatform($platforms[$instance->platformId]);
 			}
 
@@ -96,6 +96,11 @@ class PlanTestCase extends BaseEntity
 			$this->testCase = $this->client->getTestCaseByPlanTestCase($this);
 		}
 		return $this->testCase;
+	}
+
+	public function setTestCase(TestCase $testCase)
+	{
+		$this->testCase = $testCase;
 	}
 
 	public function getTestPlan()

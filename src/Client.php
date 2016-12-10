@@ -185,20 +185,23 @@ class Client
 	 */
 	public function getPlatformsByPlan(TestPlan $plan)
 	{
-		$response = $this->_makeSignCall('tl.getTestPlanPlatforms', ['testplanid' => $plan->id]);
+		try {
+			$response = $this->_makeSignCall('tl.getTestPlanPlatforms', ['testplanid' => $plan->id]);
 
-		$results = [];
-		if(is_array($response)) {
-			foreach ($response as $plat) {
-				if(isset($plat['code']) && $plat['code'] == 3041) {
-					break;
+			$results = [];
+			if(is_array($response)) {
+				foreach ($response as $plat) {
+					$platform = Platform::createFromArray($this, $plat);
+					$platform->setTestPlan($plan);
+					$results[] = $platform;
 				}
-				$platform = Platform::createFromArray($this, $plat);
-				$platform->setTestPlan($plan);
-				$results[] = $platform;
+			}
+			return $results;
+		} catch (TestLinkAPIException $e) {
+			if($e->getCode() == 3041) {
+				return [];
 			}
 		}
-		return $results;
 	}
 
 	/**
@@ -222,6 +225,9 @@ class Client
 	 */
 	public function getPlanTestCasesBy(TestPlan $plan, $withPath = true, Build $build = null, Platform $platform = null)
 	{
+		if(!$build) {
+			$build = $this->getLatestBuildByPlan($plan);
+		}
 		$args = [
 			'testplanid' => $plan->id,
 			'getstepsinfo' => true,
@@ -294,22 +300,26 @@ class Client
 	 */
 	public function getLastExecutionByTestCaseInstance(PlanTestCaseInstance $testCaseInstance)
 	{
-		$args = [
-			'testcaseid' => $testCaseInstance->getTestCase()->id,
-			'testplanid' => $testCaseInstance->getTestCase()->getTestPlan()->id,
-			'buildid' => $testCaseInstance->getBuild()->id,
-		];
+		if($testCaseInstance->getBuild()) {
+			$args = [
+				'testcaseid' => $testCaseInstance->getTestCase()->id,
+				'testplanid' => $testCaseInstance->getTestCase()->getTestPlan()->id,
+				'buildid' => $testCaseInstance->getBuild()->id,
+			];
 
-		if ($testCaseInstance->getPlatform()) {
-			$args['platformid'] = $testCaseInstance->getPlatform()->id;
-		}
+			if ($testCaseInstance->getPlatform()) {
+				$args['platformid'] = $testCaseInstance->getPlatform()->id;
+			}
 
-		$response = $this->_makeSignCall('tl.getLastExecutionResult', $args);
+			$response = $this->_makeSignCall('tl.getLastExecutionResult', $args);
 
-		if (is_array($response) && isset($response[0]) && $response[0]['id'] != -1) {
-			$result = PlanTestCaseExecution::createFromArray($this, $response[0]);
-			$result->setTestCaseInstance($testCaseInstance);
-			return $result;
+			if (is_array($response) && isset($response[0]) && $response[0]['id'] != -1) {
+				$result = PlanTestCaseExecution::createFromArray($this, $response[0]);
+				$result->setTestCaseInstance($testCaseInstance);
+				return $result;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -447,7 +457,6 @@ class Client
 	 * @param bool $keywords
 	 * @return TestCase[]
 	 */
-	// @todo - keywords
 	public function getTestCasesByTestSuite(TestSuite $testSuite, $deep = true, $keywords = false)
 	{
 		$args = [
@@ -489,7 +498,6 @@ class Client
 			'testsuiteid' => $testSuite->id,
 			'testprojectid' => $project->id,
 			'summary' => $summary,
-			'steps' => $steps,
 			'preconditions' => $preconditions,
 			'authorlogin' => $user->login,
 		];
@@ -575,8 +583,8 @@ class Client
 
 		$response = $this->_makeSignCall('tl.updateTestSuite', $args);
 
-		if (is_array($response) && isset($response[0]) && $response[0]['id'] != -1) {
-			return $response[0]['id'];
+		if (is_array($response) && isset($response[0]) && isset($response[0]['status'])) {
+			return $response[0]['status'];
 		} else {
 			return false;
 		}
@@ -645,7 +653,7 @@ class Client
 	public function deleteExecution(PlanTestCaseExecution $testCaseExecution)
 	{
 		$args = [
-			'executionid' => $testCaseExecution->id,
+			'executionid' => (int)$testCaseExecution->id,
 		];
 
 		$response = $this->_makeSignCall('tl.deleteExecution', $args);
@@ -869,7 +877,7 @@ class Client
 
 		$response = $this->_makeSignCall('tl.createTestCaseSteps', $args);
 
-		return $response; // @todo
+		return true;
 
 	}
 
@@ -895,7 +903,7 @@ class Client
 
 		$response = $this->_makeSignCall('tl.deleteTestCaseSteps', $args);
 
-		return $response; // @todo;
+		return true;
 	}
 
 	/**
@@ -908,14 +916,14 @@ class Client
 	{
 		$args = [
 			'testprojectname' => $project->name,
-			'name' => $name,
+			'platformname' => $name,
 			'notes' => $notes,
 		];
 
 		$response = $this->_makeSignCall('tl.createPlatform', $args);
 
-		if (is_array($response) && isset($response[0]) && $response[0]['id'] != -1) {
-			return $response[0]['id'];
+		if (is_array($response) && $response['id'] != -1) {
+			return $response['id'];
 		} else {
 			return false;
 		}
@@ -948,7 +956,7 @@ class Client
 	/**
 	 * @param TestPlan $plan
 	 * @param Platform $platform
-	 * @return mixed
+	 * @return bool
 	 */
 	public function assignPlatformToPlan(TestPlan $plan, Platform $platform)
 	{
@@ -959,13 +967,13 @@ class Client
 
 		$response = $this->_makeSignCall('tl.addPlatformToTestPlan', $args);
 
-		return $response;
+		return true;
 	}
 
 	/**
 	 * @param TestPlan $plan
 	 * @param Platform $platform
-	 * @return mixed
+	 * @return bool
 	 */
 	public function removePlatformFromPlan(TestPlan $plan, Platform $platform)
 	{
@@ -976,7 +984,7 @@ class Client
 
 		$response = $this->_makeSignCall('tl.removePlatformFromTestPlan', $args);
 
-		return $response;
+		return true;
 	}
 
 	/**
@@ -1000,7 +1008,7 @@ class Client
 
 	/**
 	 * @param $id
-	 * @return User
+	 * @return User|bool
 	 */
 	public function getUserById($id)
 	{
@@ -1010,7 +1018,11 @@ class Client
 
 		$response = $this->_makeSignCall('tl.getUserByID', $args);
 
-		return User::createFromArray($this, $response);
+		if(isset($response[0])) {
+			return User::createFromArray($this, $response[0]);
+		}
+
+		return false;
 	}
 
 	/**
@@ -1057,7 +1069,7 @@ class Client
 
 		$response = $this->_makeSignCall('tl.updateTestCase', $args);
 
-		return $response;
+		return isset($response['status_ok'])?$response['status_ok']:false;
 	}
 
 	/**
@@ -1070,7 +1082,7 @@ class Client
 		$args = [
 			'user' => $user->login,
 			'testplanid' => $testCaseInstance->getBuild()->testplan_id,
-			'testcaseexternalid' => $testCaseInstance->getTestCase()->getTestCase()->fullExternalId,
+			'testcaseexternalid' => $testCaseInstance->getTestCase()->getTestCase()->full_tc_external_id,
 			'buildid' => $testCaseInstance->getBuild()->id,
 		];
 
@@ -1080,7 +1092,7 @@ class Client
 
 		$response = $this->_makeSignCall('tl.assignTestCaseExecutionTask', $args);
 
-		return $response;
+		return isset($response['status'])?$response['status']:false;
 	}
 
 	/**
@@ -1088,11 +1100,11 @@ class Client
 	 * @param PlanTestCaseInstance $testCaseInstance
 	 * @return mixed
 	 */
-	public function removeTestCaseExecutionFromUser(User $user = null, PlanTestCaseInstance $testCaseInstance)
+	public function removeTestCaseInstanceFromUser(User $user = null, PlanTestCaseInstance $testCaseInstance)
 	{
 		$args = [
 			'testplanid' => $testCaseInstance->getBuild()->testplan_id,
-			'testcaseexternalid' => $testCaseInstance->getTestCase()->getTestCase()->fullExternalId,
+			'testcaseexternalid' => $testCaseInstance->getTestCase()->getTestCase()->full_tc_external_id,
 			'buildid' => $testCaseInstance->getBuild()->id,
 		];
 
@@ -1108,18 +1120,18 @@ class Client
 
 		$response = $this->_makeSignCall('tl.unassignTestCaseExecutionTask', $args);
 
-		return $response;
+		return isset($response['status'])?$response['status']:false;
 	}
 
 	/**
 	 * @param PlanTestCaseInstance $testCaseInstance
-	 * @return User
+	 * @return User|bool
 	 */
 	public function getUserByAssignedTestCaseInstance(PlanTestCaseInstance $testCaseInstance)
 	{
 		$args = [
 			'testplanid' => $testCaseInstance->getBuild()->testplan_id,
-			'testcaseexternalid' => $testCaseInstance->getTestCase()->getTestCase()->fullExternalId,
+			'testcaseexternalid' => $testCaseInstance->getTestCase()->getTestCase()->full_tc_external_id,
 			'buildid' => $testCaseInstance->getBuild()->id,
 		];
 
@@ -1129,7 +1141,12 @@ class Client
 
 		$response = $this->_makeSignCall('tl.getTestCaseAssignedTester', $args);
 
-		return User::createFromArray($this, $response);
+
+		if(isset($response[0])) {
+			return User::createFromArray($this, $response[0]);
+		}
+
+		return false;
 	}
 
 	/**
@@ -1193,13 +1210,13 @@ class Client
 
 		$response = $this->_makeSignCall('tl.deleteTestPlan', $args);
 
-		return $response; // @todo
+		return isset($response[0]['status'])?$response[0]['status']:false;
 	}
 
 	/**
 	 * @param TestCase $testCase
 	 * @param Keyword[] $keywords
-	 * @return mixed
+	 * @return bool
 	 */
 	public function assignKeywordsToTestCase(TestCase $testCase, array $keywords)
 	{
@@ -1210,13 +1227,13 @@ class Client
 
 		$response = $this->_makeSignCall('tl.addTestCaseKeywords', $args);
 
-		return $response; // @todo
+		return isset($response['status_ok'])?$response['status_ok']:false;
 	}
 
 	/**
 	 * @param TestCase $testCase
 	 * @param Keyword[] $keywords
-	 * @return mixed
+	 * @return bool
 	 */
 	public function removeKeywordsFromTestCase(TestCase $testCase, array $keywords)
 	{
@@ -1227,7 +1244,7 @@ class Client
 
 		$response = $this->_makeSignCall('tl.removeTestCaseKeywords', $args);
 
-		return $response; // @todo
+		return isset($response['status_ok'])?$response['status_ok']:false;
 	}
 
 	/**
@@ -1242,7 +1259,7 @@ class Client
 
 		$response = $this->_makeSignCall('tl.deleteTestProject', $args);
 
-		return $response; // @todo
+		return isset($response[0]['status'])?$response[0]['status']:false;
 	}
 
 	/**

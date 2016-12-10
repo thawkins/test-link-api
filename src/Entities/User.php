@@ -3,8 +3,6 @@ namespace Skalda\TestLinkAPI\Entities;
 
 class User extends BaseEntity
 {
-	protected $fullPath;
-
 	public $firstName;
 	public $lastName;
 	public $emailAddress;

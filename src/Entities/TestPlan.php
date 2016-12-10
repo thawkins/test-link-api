@@ -5,7 +5,7 @@ class TestPlan extends BaseEntity
 {
 	protected $testProject = null;
 	protected $builds = null;
-	protected $platforms = null;
+	public $platforms = null;
 
 	public $id;
 	public $name;
