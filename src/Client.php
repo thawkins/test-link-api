@@ -1340,10 +1340,12 @@ class Client
 	protected function checkResponse($response)
 	{
 		if(is_array($response)) {
-			if(isset($response['code']) && $response['code'] != null) {
-				throw new TestLinkAPIException($response['message'], $response['code']);
-			} elseif (isset($response['status_ok']) && $response['status_ok'] != null && $response['status_ok'] == 0){
-				throw new TestLinkAPIException($response['msg'], $response['status_ok']);
+			foreach($response as $res) {
+				if (isset($res['code']) && $res['code'] != null) {
+					throw new TestLinkAPIException($res['message'], $res['code']);
+				} elseif (isset($res['status_ok']) && $res['status_ok'] != null && $res['status_ok'] == 0) {
+					throw new TestLinkAPIException($res['msg'], $res['status_ok']);
+				}
 			}
 		}
 
