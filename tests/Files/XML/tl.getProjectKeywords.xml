@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<methodResponse>
+	<params>
+		<param>
+			<value>
+				<struct>
+					<member>
+						<name>
+							3
+						</name>
+						<value>
+							<string>
+								Keyword one
+							</string>
+						</value>
+					</member>
+					<member>
+						<name>
+							4
+						</name>
+						<value>
+							<string>
+								Keyword two
+							</string>
+						</value>
+					</member>
+				</struct>
+			</value>
+		</param>
+	</params>
+</methodResponse>

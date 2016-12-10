@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<methodResponse>
+	<params>
+		<param>
+			<value>
+				<string>
+					1.9.15
+				</string>
+			</value>
+		</param>
+	</params>
+</methodResponse>
