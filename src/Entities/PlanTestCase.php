@@ -21,7 +21,7 @@ class PlanTestCase extends BaseEntity
 	public $executionOrder;
 	public $fullExternalId;
 
-	public function __construct(Client $client, TestPlan $plan, Build $build, array $values)
+	public function __construct(Client $client, TestPlan $plan, Build $build = null, array $values)
 	{
 		parent::__construct($client);
 
@@ -44,7 +44,9 @@ class PlanTestCase extends BaseEntity
 			$instance->execOnBuild = $testCase['exec_on_build'];
 			$instance->execOnTPlan = $testCase['exec_on_tplan'];
 			$instance->setTestCase($this);
-			$instance->setBuild($build);
+			if($build) {
+				$instance->setBuild($build);
+			}
 
 			if(is_array($platforms) && count($platforms) > 0) {
 				$instance->setPlatform($platforms[$instance->platformId]);

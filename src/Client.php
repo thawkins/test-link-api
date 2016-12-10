@@ -514,45 +514,6 @@ class Client
 
 	/**
 	 * @param TestProject $project
-	 * @param TestCase $testCase
-	 * @param TestPlan $plan
-	 * @param Platform|null $platform
-	 * @param null $executionOrder
-	 * @param null $urgency
-	 * @param null $overwrite
-	 */
-	public function assignTestCaseToPlan(TestProject $project, TestCase $testCase, TestPlan $plan, Platform $platform = null, $executionOrder = null, $urgency = null, $overwrite = null)
-	{
-		$args = [
-			'testprojectid' => $project->id,
-			'testplanid' => $plan->id,
-			'testcaseexternalid' => $testCase->tc_external_id,
-			'version' => $testCase->version,
-		];
-
-		if($platform) {
-			$args['platfomrid'] = $platform->id;
-		}
-
-		if($executionOrder) {
-			$args['executionorder'] = $executionOrder;
-		}
-
-		if($urgency) {
-			$args['urgency'] = $urgency;
-		}
-
-		if($overwrite) {
-			$args['overwrite'] = $overwrite;
-		}
-
-		$response = $this->_makeSignCall('tl.addTestCaseToTestPlan', $args);
-
-		// @todo
-	}
-
-	/**
-	 * @param TestProject $project
 	 * @return TestSuite[]
 	 */
 	public function getFirstLevelTestSuitesByProject(TestProject $project)
@@ -966,19 +927,22 @@ class Client
 	 */
 	public function getPlatformsByProject(TestProject $project)
 	{
-		$response = $this->_makeSignCall('tl.getProjectPlatforms', ['testprojectid' => $project->id]);
+		try {
+			$response = $this->_makeSignCall('tl.getProjectPlatforms', ['testprojectid' => $project->id]);
 
-		$results = [];
-		if(is_array($response)) {
-			foreach ($response as $plat) {
-				if(isset($plat['code']) && $plat['code'] == 3041) {
-					break;
+			$results = [];
+			if (is_array($response)) {
+				foreach ($response as $plat) {
+					$platform = Platform::createFromArray($this, $plat);
+					$results[] = $platform;
 				}
-				$platform = Platform::createFromArray($this, $plat);
-				$results[] = $platform;
+			}
+			return $results;
+		} catch (TestLinkAPIException $e) {
+			if($e->getCode() == 3041) {
+				return [];
 			}
 		}
-		return $results;
 	}
 
 	/**
