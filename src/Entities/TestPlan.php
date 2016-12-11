@@ -35,11 +35,6 @@ class TestPlan extends BaseEntity
 		return $this->builds;
 	}
 
-	public function fillBuildsWithExecInfo()
-	{
-		$this->client->getExecPerBuildByPlan($this);
-	}
-
 	public function getPlatforms()
 	{
 		if($this->platforms === null) {

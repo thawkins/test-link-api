@@ -3,7 +3,8 @@ namespace Skalda\TestLinkAPI\Entities;
 
 class TestCase extends BaseEntity
 {
-	protected $fullPath = [];
+	protected $fullPath = null;
+	protected $keywords = null;
 
 	public $updater_login;
 	public $author_login;
@@ -47,6 +48,15 @@ class TestCase extends BaseEntity
 	public function setFullPath(array $path)
 	{
 		$this->fullPath = $path;
+	}
+
+	public function getKeywords()
+	{
+		if($this->keywords === null) {
+			$this->keywords = $this->client->getKeywordsByTestCase($this);
+		}
+
+		return $this->keywords;
 	}
 
 }

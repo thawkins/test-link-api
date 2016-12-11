@@ -5,6 +5,8 @@ class TestProject extends BaseEntity
 {
 
 	protected $testPlans = null;
+	protected $platforms = null;
+	protected $keywords = null;
 
 	public $id;
 	public $notes;
@@ -29,5 +31,23 @@ class TestProject extends BaseEntity
 			$this->testPlans = $this->client->getPlansByProject($this);
 		}
 		return $this->testPlans;
+	}
+
+	public function getPlatforms()
+	{
+		if($this->platforms === null) {
+			$this->platforms = $this->client->getPlatformsByProject($this);
+		}
+
+		return $this->platforms;
+	}
+
+	public function getKeywords()
+	{
+		if($this->keywords === null) {
+			$this->keywords = $this->client->getKeywordsByProject($this);
+		}
+
+		return $this->keywords;
 	}
 }
