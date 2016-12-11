@@ -51,7 +51,24 @@ class Client
 	 */
 	public function checkConnectivity()
 	{
-		return $this->_makeCall('tl.ping') === 'Hello!';
+		try {
+			return $this->_makeCall('tl.ping') === 'Hello!';
+		} catch (TestLinkAPIException $e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Check extensions
+	 * @return bool
+	 */
+	public function checkExtensions()
+	{
+		try {
+			return $this->_makeCall('tl.isExtended');
+		} catch (TestLinkAPIException $e) {
+			return false;
+		}
 	}
 
 	/**
