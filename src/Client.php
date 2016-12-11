@@ -27,7 +27,7 @@ class Client
 	private $apiKey = null;
 
 	/**
-	 * XMLRPC constructor.
+	 * Client constructor.
 	 * @param string $serverUrl
 	 */
 	public function __construct($serverUrl)
@@ -37,6 +37,7 @@ class Client
 	}
 
 	/**
+	 * Sets API key for current user
 	 * @param string $apiKey
 	 */
 	public function setAPIKey($apiKey)
@@ -45,6 +46,7 @@ class Client
 	}
 
 	/**
+	 * Check connectivity to TestLink API
 	 * @return bool
 	 */
 	public function checkConnectivity()
@@ -53,15 +55,23 @@ class Client
 	}
 
 	/**
+	 * Check if $apiKey is valid
 	 * @param $apiKey
 	 * @return bool
 	 */
 	public function checkApiKey($apiKey)
 	{
-		return $this->_makeCall('tl.checkDevKey', ['devKey' => $apiKey]);
+		try {
+			$response = $this->_makeCall('tl.checkDevKey', ['devKey' => $apiKey]);
+		} catch (TestLinkAPIException $e) {
+			return false;
+		}
+
+		return $response;
 	}
 
 	/**
+	 * Gets TestLink version
 	 * @return string
 	 */
 	public function getTestLinkVersion()
@@ -70,17 +80,12 @@ class Client
 	}
 
 	/**
+	 * Gets information about API
 	 * @return string
 	 */
 	public function getAboutApi()
 	{
 		return $this->_makeCall('tl.about');
-	}
-
-
-	public function setTestMode()
-	{
-		return $this->_makeCall(''); // @todo
 	}
 
 	/**
@@ -181,7 +186,7 @@ class Client
 
 	/**
 	 * @param TestPlan $plan
-	 * @return Platform[]|boolean
+	 * @return Platform[]
 	 */
 	public function getPlatformsByPlan(TestPlan $plan)
 	{
@@ -326,14 +331,6 @@ class Client
 	}
 
 	/**
-	 * @param BaseEntity $entity
-	 */
-	public function getFullPath(BaseEntity $entity)
-	{
-		$response = $this->_makeSignCall('tl.getFullPath', ['nodeid' => (int)$entity->id]); //@todo
-	}
-
-	/**
 	 * @param BaseEntity[] $entities
 	 * @return array
 	 */
@@ -375,7 +372,6 @@ class Client
 	 * @param string $releaseDate
 	 * @return int|bool
 	 */
-	// @todo - releasedate
 	public function createBuild(TestPlan $plan, $name, $notes, $active, $open, $releaseDate)
 	{
 		$args = [
@@ -490,7 +486,6 @@ class Client
 	 * @param $preconditions
 	 * @return int|bool
 	 */
-	// @todo
 	public function createTestCase(TestProject $project, TestSuite $testSuite, User $user, $name, $summary, array $steps, $preconditions)
 	{
 		$args = [
