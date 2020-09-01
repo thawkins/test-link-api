@@ -15,6 +15,7 @@ use thawkins\TestLinkAPI\Entities\PlanTestCaseExecution;
 use thawkins\TestLinkAPI\Entities\PlanTestCaseInstance;
 use thawkins\TestLinkAPI\Entities\TestSuite;
 use thawkins\TestLinkAPI\Entities\User;
+use thawkins\TestLinkAPI\TestLinkAPIException;
 use IXR\Client as XMLRPC;
 
 class Client
