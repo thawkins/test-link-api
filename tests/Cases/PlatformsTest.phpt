@@ -1,5 +1,5 @@
 <?php
-namespace Skalda\TestLinkAPI\Tests\Cases;
+namespace thawkins\TestLinkAPI\Tests\Cases;
 
 use Tester\Assert;
 
@@ -24,7 +24,7 @@ class PlatformsTest extends BaseTestCase
 		Assert::count(5, $response);
 
 		foreach($response as $res) {
-			Assert::type('Skalda\TestLinkAPI\Entities\Platform', $res);
+			Assert::type('thawkins\TestLinkAPI\Entities\Platform', $res);
 		}
 
 		Assert::equal('1', $response[0]->id);
@@ -66,7 +66,7 @@ class PlatformsTest extends BaseTestCase
 		Assert::count(5, $response);
 
 		foreach($response as $res) {
-			Assert::type('Skalda\TestLinkAPI\Entities\Platform', $res);
+			Assert::type('thawkins\TestLinkAPI\Entities\Platform', $res);
 		}
 
 		Assert::equal('1', $response[0]->id);

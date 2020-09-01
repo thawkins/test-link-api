@@ -1,8 +1,8 @@
 <?php
 
-namespace Skalda\TestLinkAPI\Entities;
+namespace thawkins\TestLinkAPI\Entities;
 
-use Skalda\TestLinkAPI\Client;
+use thawkins\TestLinkAPI\Client;
 
 abstract class BaseEntity implements IResponse
 {

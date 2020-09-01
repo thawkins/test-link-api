@@ -1,9 +1,9 @@
 <?php
-namespace Skalda\TestLinkAPI\Tests\Cases;
+namespace thawkins\TestLinkAPI\Tests\Cases;
 
-use Skalda\TestLinkAPI\Client;
-use Skalda\TestLinkAPI\Entities\TestPlan;
-use Skalda\TestLinkAPI\Tests\Mockup\ClientMock;
+use thawkins\TestLinkAPI\Client;
+use thawkins\TestLinkAPI\Entities\TestPlan;
+use thawkins\TestLinkAPI\Tests\Mockup\ClientMock;
 use Tester\TestCase;
 use Tester\Assert;
 
@@ -28,7 +28,7 @@ class BuildsTest extends BaseTestCase
 		Assert::count(2, $response);
 
 		foreach($response as $resp) {
-			Assert::type('Skalda\TestLinkAPI\Entities\Build', $resp);
+			Assert::type('thawkins\TestLinkAPI\Entities\Build', $resp);
 		}
 
 		Assert::equal('1', $response[0]->id);
@@ -49,7 +49,7 @@ class BuildsTest extends BaseTestCase
 		Assert::equal(3, $this->clientMock->getCalledArgument('buildid'));
 		Assert::equal(385, $this->clientMock->getCalledArgument('testplanid'));
 
-		Assert::type('Skalda\TestLinkAPI\Entities\Build', $response);
+		Assert::type('thawkins\TestLinkAPI\Entities\Build', $response);
 
 		Assert::equal('3', $response->id);
 	}
@@ -83,7 +83,7 @@ class BuildsTest extends BaseTestCase
 
 		Assert::equal(383, $this->clientMock->getCalledArgument('testplanid'));
 
-		Assert::type('Skalda\TestLinkAPI\Entities\Build', $response);
+		Assert::type('thawkins\TestLinkAPI\Entities\Build', $response);
 
 		Assert::equal('2', $response->id);
 	}

@@ -1,5 +1,5 @@
 <?php
-namespace Skalda\TestLinkAPI\Tests\Cases;
+namespace thawkins\TestLinkAPI\Tests\Cases;
 
 use Tester\Assert;
 
@@ -24,7 +24,7 @@ class TestPlansTest extends BaseTestCase
 		Assert::count(2, $response);
 
 		foreach($response as $res) {
-			Assert::type('Skalda\TestLinkAPI\Entities\TestPlan', $res);
+			Assert::type('thawkins\TestLinkAPI\Entities\TestPlan', $res);
 		}
 
 		Assert::equal('383', $response[0]->id);
@@ -41,7 +41,7 @@ class TestPlansTest extends BaseTestCase
 
 		Assert::equal(383, $this->clientMock->getCalledArgument('testplanid'));
 
-		Assert::type('Skalda\TestLinkAPI\Entities\TestPlan', $response);
+		Assert::type('thawkins\TestLinkAPI\Entities\TestPlan', $response);
 
 		Assert::equal('383', $response->id);
 	}

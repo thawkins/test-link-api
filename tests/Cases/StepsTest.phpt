@@ -1,7 +1,7 @@
 <?php
-namespace Skalda\TestLinkAPI\Tests\Cases;
+namespace thawkins\TestLinkAPI\Tests\Cases;
 
-use Skalda\TestLinkAPI\Entities\Step;
+use thawkins\TestLinkAPI\Entities\Step;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';

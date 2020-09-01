@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "thawkins\\test-link-api\\": "src/"
+            "thawkins\\TestLinkApi\\": "src/"
         }
     },
     "extra": {

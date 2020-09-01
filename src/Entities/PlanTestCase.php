@@ -1,7 +1,7 @@
 <?php
-namespace Skalda\TestLinkAPI\Entities;
+namespace thawkins\TestLinkAPI\Entities;
 
-use Skalda\TestLinkAPI\Client;
+use thawkins\TestLinkAPI\Client;
 
 class PlanTestCase extends BaseEntity
 {

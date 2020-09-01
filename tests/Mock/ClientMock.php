@@ -1,5 +1,5 @@
 <?php
-namespace Skalda\TestLinkAPI\Tests\Mockup;
+namespace thawkins\TestLinkAPI\Tests\Mockup;
 
 use IXR\Message\Message;
 

@@ -1,26 +1,26 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Skalda
+ * User: thawkins
  * Date: 09/12/16
  * Time: 21:35
  */
 
-namespace Skalda\TestLinkAPI\Tests\Cases;
+namespace thawkins\TestLinkAPI\Tests\Cases;
 
 
-use Skalda\TestLinkAPI\Client;
-use Skalda\TestLinkAPI\Entities\Build;
-use Skalda\TestLinkAPI\Entities\Keyword;
-use Skalda\TestLinkAPI\Entities\PlanTestCase;
-use Skalda\TestLinkAPI\Entities\PlanTestCaseExecution;
-use Skalda\TestLinkAPI\Entities\PlanTestCaseInstance;
-use Skalda\TestLinkAPI\Entities\Platform;
-use Skalda\TestLinkAPI\Entities\TestPlan;
-use Skalda\TestLinkAPI\Entities\TestProject;
-use Skalda\TestLinkAPI\Entities\TestSuite;
-use Skalda\TestLinkAPI\Entities\User;
-use Skalda\TestLinkAPI\Tests\Mockup\ClientMock;
+use thawkins\TestLinkAPI\Client;
+use thawkins\TestLinkAPI\Entities\Build;
+use thawkins\TestLinkAPI\Entities\Keyword;
+use thawkins\TestLinkAPI\Entities\PlanTestCase;
+use thawkins\TestLinkAPI\Entities\PlanTestCaseExecution;
+use thawkins\TestLinkAPI\Entities\PlanTestCaseInstance;
+use thawkins\TestLinkAPI\Entities\Platform;
+use thawkins\TestLinkAPI\Entities\TestPlan;
+use thawkins\TestLinkAPI\Entities\TestProject;
+use thawkins\TestLinkAPI\Entities\TestSuite;
+use thawkins\TestLinkAPI\Entities\User;
+use thawkins\TestLinkAPI\Tests\Mockup\ClientMock;
 use Tester\TestCase;
 
 abstract class BaseTestCase extends TestCase
@@ -124,7 +124,7 @@ abstract class BaseTestCase extends TestCase
 
 	protected function getTestCase()
 	{
-		$testCase = new \Skalda\TestLinkAPI\Entities\TestCase($this->testLinkAPI);
+		$testCase = new \thawkins\TestLinkAPI\Entities\TestCase($this->testLinkAPI);
 		$testCase->updater_login = 'admin';
 		$testCase->author_login = 'admin';
 		$testCase->name = 'Case name';

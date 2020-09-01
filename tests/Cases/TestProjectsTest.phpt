@@ -1,7 +1,7 @@
 <?php
-namespace Skalda\TestLinkAPI\Tests\Cases;
+namespace thawkins\TestLinkAPI\Tests\Cases;
 
-use Skalda\TestLinkAPI\Entities\TestProject;
+use thawkins\TestLinkAPI\Entities\TestProject;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
@@ -21,7 +21,7 @@ class TestProjectTest extends BaseTestCase
 		Assert::count(3, $response);
 
 		foreach($response as $resp) {
-			Assert::type('Skalda\TestLinkAPI\Entities\TestProject', $resp);
+			Assert::type('thawkins\TestLinkAPI\Entities\TestProject', $resp);
 		}
 
 		Assert::equal('354', $response[0]->id);
@@ -39,7 +39,7 @@ class TestProjectTest extends BaseTestCase
 
 		Assert::equal(1, $this->clientMock->getCalledArgument('testprojectid'));
 
-		Assert::type('Skalda\TestLinkAPI\Entities\TestProject', $response);
+		Assert::type('thawkins\TestLinkAPI\Entities\TestProject', $response);
 
 		Assert::equal('1', $response->id);
 	}

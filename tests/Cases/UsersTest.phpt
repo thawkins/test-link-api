@@ -1,5 +1,5 @@
 <?php
-namespace Skalda\TestLinkAPI\Tests\Cases;
+namespace thawkins\TestLinkAPI\Tests\Cases;
 
 use Tester\Assert;
 
@@ -37,7 +37,7 @@ class UsersTest extends BaseTestCase
 
 		Assert::equal($user->login, $this->clientMock->getCalledArgument('user'));
 
-		Assert::type('Skalda\TestLinkAPI\Entities\User', $response);
+		Assert::type('thawkins\TestLinkAPI\Entities\User', $response);
 
 		Assert::equal('1', $response->dbID);
 	}
@@ -54,7 +54,7 @@ class UsersTest extends BaseTestCase
 
 		Assert::equal($user->dbID, $this->clientMock->getCalledArgument('userid'));
 
-		Assert::type('Skalda\TestLinkAPI\Entities\User', $response);
+		Assert::type('thawkins\TestLinkAPI\Entities\User', $response);
 
 		Assert::equal('1', $response->dbID);
 	}
@@ -73,7 +73,7 @@ class UsersTest extends BaseTestCase
 		Assert::equal($testCaseInstance->getTestCase()->getTestCase()->full_tc_external_id, $this->clientMock->getCalledArgument('testcaseexternalid'));
 		Assert::equal($testCaseInstance->getBuild()->id, $this->clientMock->getCalledArgument('buildid'));
 
-		Assert::type('Skalda\TestLinkAPI\Entities\User', $response);
+		Assert::type('thawkins\TestLinkAPI\Entities\User', $response);
 
 		Assert::equal('admin', $response->login);
 	}

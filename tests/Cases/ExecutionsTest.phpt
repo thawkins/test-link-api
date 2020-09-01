@@ -1,10 +1,10 @@
 <?php
-namespace Skalda\TestLinkAPI\Tests\Cases;
+namespace thawkins\TestLinkAPI\Tests\Cases;
 
-use Skalda\TestLinkAPI\Entities\Build;
-use Skalda\TestLinkAPI\Entities\PlanTestCase;
-use Skalda\TestLinkAPI\Entities\PlanTestCaseInstance;
-use Skalda\TestLinkAPI\Entities\TestPlan;
+use thawkins\TestLinkAPI\Entities\Build;
+use thawkins\TestLinkAPI\Entities\PlanTestCase;
+use thawkins\TestLinkAPI\Entities\PlanTestCaseInstance;
+use thawkins\TestLinkAPI\Entities\TestPlan;
 use Tester\Assert;
 
 require __DIR__ . '/../bootstrap.php';
@@ -28,7 +28,7 @@ class ExecutionsTest extends BaseTestCase
 		Assert::equal($testCaseInstance->getTestCase()->getTestPlan()->id, $this->clientMock->getCalledArgument('testplanid'));
 		Assert::equal($testCaseInstance->getTestCase()->id, $this->clientMock->getCalledArgument('testcaseid'));
 
-		Assert::type('Skalda\TestLinkAPI\Entities\PlanTestCaseExecution', $response);
+		Assert::type('thawkins\TestLinkAPI\Entities\PlanTestCaseExecution', $response);
 
 		Assert::equal('3', $response->id);
 	}

@@ -1,5 +1,5 @@
 <?php
-namespace Skalda\TestLinkAPI\Tests\Cases;
+namespace thawkins\TestLinkAPI\Tests\Cases;
 
 use Tester\Assert;
 
@@ -25,7 +25,7 @@ class KeywordsTest extends BaseTestCase
 		Assert::count(2, $response);
 
 		foreach($response as $res) {
-			Assert::type('Skalda\TestLinkAPI\Entities\Keyword', $res);
+			Assert::type('thawkins\TestLinkAPI\Entities\Keyword', $res);
 		}
 
 		Assert::equal('Keyword one', $response[0]->name);
@@ -48,7 +48,7 @@ class KeywordsTest extends BaseTestCase
 		Assert::count(2, $response);
 
 		foreach($response as $res) {
-			Assert::type('Skalda\TestLinkAPI\Entities\Keyword', $res);
+			Assert::type('thawkins\TestLinkAPI\Entities\Keyword', $res);
 		}
 
 		Assert::equal('Keyword one', $response[0]->name);

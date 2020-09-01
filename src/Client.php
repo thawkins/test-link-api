@@ -1,20 +1,20 @@
 <?php
-namespace Skalda\TestLinkAPI;
+namespace thawkins\TestLinkAPI;
 
-use Skalda\TestLinkAPI\Entities\Attachment;
-use Skalda\TestLinkAPI\Entities\BaseEntity;
-use Skalda\TestLinkAPI\Entities\Build;
-use Skalda\TestLinkAPI\Entities\Keyword;
-use Skalda\TestLinkAPI\Entities\TestPlan;
-use Skalda\TestLinkAPI\Entities\PlanTestCase;
-use Skalda\TestLinkAPI\Entities\Platform;
-use Skalda\TestLinkAPI\Entities\TestProject;
-use Skalda\TestLinkAPI\Entities\Step;
-use Skalda\TestLinkAPI\Entities\TestCase;
-use Skalda\TestLinkAPI\Entities\PlanTestCaseExecution;
-use Skalda\TestLinkAPI\Entities\PlanTestCaseInstance;
-use Skalda\TestLinkAPI\Entities\TestSuite;
-use Skalda\TestLinkAPI\Entities\User;
+use thawkins\TestLinkAPI\Entities\Attachment;
+use thawkins\TestLinkAPI\Entities\BaseEntity;
+use thawkins\TestLinkAPI\Entities\Build;
+use thawkins\TestLinkAPI\Entities\Keyword;
+use thawkins\TestLinkAPI\Entities\TestPlan;
+use thawkins\TestLinkAPI\Entities\PlanTestCase;
+use thawkins\TestLinkAPI\Entities\Platform;
+use thawkins\TestLinkAPI\Entities\TestProject;
+use thawkins\TestLinkAPI\Entities\Step;
+use thawkins\TestLinkAPI\Entities\TestCase;
+use thawkins\TestLinkAPI\Entities\PlanTestCaseExecution;
+use thawkins\TestLinkAPI\Entities\PlanTestCaseInstance;
+use thawkins\TestLinkAPI\Entities\TestSuite;
+use thawkins\TestLinkAPI\Entities\User;
 use IXR\Client as XMLRPC;
 
 class Client

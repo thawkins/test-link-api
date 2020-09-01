@@ -1,5 +1,5 @@
 <?php
-namespace Skalda\TestLinkAPI;
+namespace thawkins\TestLinkAPI;
 
 
 class TestLinkAPIException extends \Exception

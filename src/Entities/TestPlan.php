@@ -1,5 +1,5 @@
 <?php
-namespace Skalda\TestLinkAPI\Entities;
+namespace thawkins\TestLinkAPI\Entities;
 
 class TestPlan extends BaseEntity
 {
