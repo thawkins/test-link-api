@@ -1,9 +1,9 @@
 {
-    "name": "skalda/test-link-api",
+    "name": "thawkins/test-link-api",
     "type": "library",
     "description": "PHP client library for XML-RPC API of TestLink",
     "keywords": ["testlink","xmlrpc","api","clinet"],
-    "homepage": "https://github.com/Skalda/TestLinkAPI",
+    "homepage": "https://github.com/thawkins/test-link-api",
     "license": "MIT",
     "authors": [
         {
@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Skalda\\TestLinkAPI\\": "src/"
+            "thawkins\\test-link-api\\": "src/"
         }
     },
     "extra": {
