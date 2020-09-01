@@ -15,7 +15,7 @@ use thawkins\TestLinkAPI\Entities\PlanTestCaseExecution;
 use thawkins\TestLinkAPI\Entities\PlanTestCaseInstance;
 use thawkins\TestLinkAPI\Entities\TestSuite;
 use thawkins\TestLinkAPI\Entities\User;
-use thawkins\TestLinkAPI\TestLinkAPIException;
+
 use IXR\Client as XMLRPC;
 
 class Client
@@ -54,7 +54,7 @@ class Client
 	{
 		try {
 			return $this->_makeCall('tl.ping') === 'Hello!';
-		} catch (TestLinkAPIException $e) {
+		} catch (Exception $e) {
 			return false;
 		}
 	}
@@ -67,7 +67,7 @@ class Client
 	{
 		try {
 			return $this->_makeCall('tl.isExtended');
-		} catch (TestLinkAPIException $e) {
+		} catch (Exception $e) {
 			return false;
 		}
 	}
@@ -81,7 +81,7 @@ class Client
 	{
 		try {
 			$response = $this->_makeCall('tl.checkDevKey', ['devKey' => $apiKey]);
-		} catch (TestLinkAPIException $e) {
+		} catch (Exception $e) {
 			return false;
 		}
 
@@ -220,7 +220,7 @@ class Client
 				}
 			}
 			return $results;
-		} catch (TestLinkAPIException $e) {
+		} catch (Exception $e) {
 			if($e->getCode() == 3041) {
 				return [];
 			}
@@ -959,7 +959,7 @@ class Client
 				}
 			}
 			return $results;
-		} catch (TestLinkAPIException $e) {
+		} catch (Exception $e) {
 			if($e->getCode() == 3041) {
 				return [];
 			}
@@ -1315,7 +1315,7 @@ class Client
 	{
 		$this->getClient()->query($method, $args);
 		if($this->getClient()->isError()) {
-			throw new TestLinkAPIException($this->getClient()->getErrorMessage(), $this->getClient()->getErrorCode());
+			throw new Exception($this->getClient()->getErrorMessage(), $this->getClient()->getErrorCode());
 		}
 		return $this->checkResponse($this->getClient()->getResponse());
 	}
@@ -1336,9 +1336,9 @@ class Client
 		if(is_array($response)) {
 			foreach($response as $res) {
 				if (isset($res['code']) && $res['code'] != null) {
-					throw new TestLinkAPIException($res['message'], $res['code']);
+					throw new Exception($res['message'], $res['code']);
 				} elseif (isset($res['status_ok']) && $res['status_ok'] != null && $res['status_ok'] == 0) {
-					throw new TestLinkAPIException($res['msg'], $res['status_ok']);
+					throw new Exception($res['msg'], $res['status_ok']);
 				}
 			}
 		}
