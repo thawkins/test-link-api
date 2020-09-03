@@ -9,6 +9,11 @@
         {
             "name": "Tomáš Skalický",
             "email": "skalicky.tomas@hotmail.com"
+        },
+        {
+            "name": "Tim Hawkins",
+            "homepage": "http://tshawkins.blogspot.com/",
+            "email": "tim.thawkins@gmail.com"
         }
     ],
     "require": {
